@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+</head>
+
+<body>
+    {% block content %}
+    <div class="container my-5">
+        <div class="card my-3">
+            <div class="card-header">
+                Created at {{ post.date }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.body }}</p>
+                <a href="/posts" class="btn btn-primary">Go Back</a>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
