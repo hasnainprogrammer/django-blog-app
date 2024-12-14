@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="my-4">Make a post</h1>
+    <form action="{% url 'makepost' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="file" name="post-image">
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Post Title</label>
+            <input type="text" name="post-title" class="form-control" id="title" placeholder="Title of your post">
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Post Body</label>
+            <textarea class="form-control" name="post-body" id="body" rows="6"
+                placeholder="Body of your post"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" class="form-control bg bg-dark text-white" value="Make Post">
+        </div>
+
+        <!--------------------------------------------->
+        <!-- {% csrf_token %} -->
+        <!-- {{ form.as_p }} -->
+        <!-- <input type="submit" value="Make Post"> -->
+    </form>
+    <!--------------------------------------------->
+</div>
+{% endblock %}

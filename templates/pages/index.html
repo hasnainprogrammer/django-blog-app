@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Showcase Area -->
+<div class="container-fluid showcase-container">
+
+</div>
+
+<!-- Latest Posts -->
+<div class="container my-4">
+    <h1 class="mb-4 text-center">Latest Posts</h1>
+    <div class="d-flex align-items-center justify-content-center flex-wrap latest-posts-container">
+        {% if posts %}
+        {% for post in posts %}
+        <div class="card me-4 mb-4" style="width: 18rem;">
+            <img src="{{ post.image.url }}" class="card-img-top" alt="python-image">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.body }}</p>
+                <p class="card-text"><strong>Posted By:</strong> {{ post.user_id | title}}</p>
+                <p class="card-text"><strong>Published:</strong> {{ post.publish_date }}</p>
+                <a href="{% url 'post' post.id %}" class="btn btn-success">Read Post</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

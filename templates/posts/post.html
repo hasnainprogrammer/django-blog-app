@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    {% if post %}
+    <img src="{{ post.image.url }}" alt="post-image" width="600">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+    <p><strong>Published on</strong>: {{ post.publish_date }}</p>
+    {% endif %}
+
+
+    <div class="container my-4">
+        <form action="{% url 'post' post.id %}" method="GET">
+            <h3>Comment</h3>
+            <div class="mb-3">
+                <textarea class="form-control" rows="6" placeholder="Share your thoughts by doing a comment"
+                    name="comment-text"></textarea>
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="form-control bg bg-success text-white" value="Comment">
+            </div>
+        </form>
+    </div>
+
+    <div class="container my-4">
+        {% if comments %}
+        {% for comment in comments %}
+        <div class="d-flex flex-column my-2">
+            <div class="d-flex">
+                <img src="https://cdn-icons-png.flaticon.com/128/847/847969.png" alt="default-user-image" width="40">
+                <p class="mx-2 my-2"><strong>{{ comment.user_id | title }}</strong></p>
+                <p class="mx-2 my-2">{{ comment.comment_date }}</p>
+            </div>
+            <p class="my-2">{{ comment.comment_text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endif %}
+    {% endblock %}

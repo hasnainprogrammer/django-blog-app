@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid d-flex justify-content-center align-items-center py-4" style="background-color: #e0dcdc;">
+    <h1>Welcome {{ user.username | title}}</h1>
+</div>
+<div class="container-fluid my-2 d-flex justify-content-end align-items-center">
+    <button class="btn btn-success"><a href="{% url 'makepost' %}" class="text-white"
+            style="text-decoration: none;">Make a post</a></button>
+</div>
+
+<div class="container-fluid px-0 dashboard-container">
+    <div class="left-bar bg-dark text-white">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link">Account</a></li>
+            <li class="nav-item"><a href="{% url 'user_created_posts' %}" class="nav-link">Posts</a></li>
+        </ul>
+    </div>
+
+
+    <div class="right-bar">
+        <h2>Manage your account</h2>
+        <form action="{% url 'dashboard' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="username"
+                    value="{{ logged_in_user.username }}">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="email" value="{{ logged_in_user.email }}">
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="form-control bg bg-dark text-white" value="Update Profile">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

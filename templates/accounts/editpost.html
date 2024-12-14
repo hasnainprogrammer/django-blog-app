@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="my-4">Edit Post</h1>
+    <form action="{% url 'edit_post' single_post.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="file" name="post-image">
+        </div>
+        <div class=" mb-3">
+            <label for="title" class="form-label">Post Title</label>
+            <input type="text" name="post-title" class="form-control" id="title" value="{{ single_post.title }}">
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Post Body</label>
+            <textarea class="form-control" name="post-body" id="body" rows="6">{{ single_post.body }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <div class="d-flex">
+                <input type="submit" class="form-control bg bg-dark text-white" value="Update Post">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
