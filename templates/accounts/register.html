@@ -1,39 +1,50 @@
 {% extends 'base.html' %}
-<!-- 
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-{% endif %} -->
+
+{% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="my-4">Register</h1>
-    <form action="{% url 'register' %}" method="POST">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" name="username" class="form-control" id="username" placeholder="Your username">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h2 class="mb-0"><i class="bi bi-person-plus me-2"></i>Register</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="Choose a username"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Your email address"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Create password"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" name="cpassword" class="form-control" placeholder="Confirm password"
+                                required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary py-2">
+                                <i class="bi bi-person-plus me-1"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" id="email" placeholder="Your email address">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="Your password">
-        </div>
-        <div class="mb-3">
-            <label for="cpassword" class="form-label">Confirm Password</label>
-            <input type="password" name="cpassword" class="form-control" id="cpassword"
-                placeholder="Confirm your password">
-        </div>
-        <div class="mb-3">
-            <input type="submit" class="form-control bg bg-dark text-white" value="Register">
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

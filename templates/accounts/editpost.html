@@ -1,27 +1,59 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<div class="container my-4">
-    <h1 class="my-4">Edit Post</h1>
-    <form action="{% url 'edit_post' single_post.id %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="file" name="post-image">
-        </div>
-        <div class=" mb-3">
-            <label for="title" class="form-label">Post Title</label>
-            <input type="text" name="post-title" class="form-control" id="title" value="{{ single_post.title }}">
-        </div>
-        <div class="mb-3">
-            <label for="body" class="form-label">Post Body</label>
-            <textarea class="form-control" name="post-body" id="body" rows="6">{{ single_post.body }}</textarea>
-        </div>
+{% block title %}Edit Post{% endblock %}
 
-        <div class="mb-3">
-            <div class="d-flex">
-                <input type="submit" class="form-control bg bg-dark text-white" value="Update Post">
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Post</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label">Featured Image</label>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ single_post.image.url }}" width="100" class="img-thumbnail me-3"
+                                    id="currentImage">
+                                <div>
+                                    <input type="file" name="post-image" class="form-control" id="newImage">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Post Title</label>
+                            <input type="text" name="post-title" class="form-control" value="{{ single_post.title }}"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Post Content</label>
+                            <textarea class="form-control" name="post-body" rows="8"
+                                required>{{ single_post.body }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'user_created_posts' %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Update Post</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
+
+<script>
+    document.getElementById('newImage').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('currentImage').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 {% endblock %}

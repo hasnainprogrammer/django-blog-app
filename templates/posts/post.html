@@ -1,41 +1,70 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ post.title }}{% endblock %}
+
 {% block content %}
-<div class="container my-4">
-    {% if post %}
-    <img src="{{ post.image.url }}" alt="post-image" width="600">
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.body }}</p>
-    <p><strong>Published on</strong>: {{ post.publish_date }}</p>
-    {% endif %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <article class="card shadow-sm mb-5">
+                <img src="{{ post.image.url }}" class="card-img-top post-detail-image" alt="{{ post.title }}">
+                <div class="card-body">
+                    <h1 class="card-title mb-3">{{ post.title }}</h1>
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" width="40"
+                            class="rounded-circle me-3">
+                        <div>
+                            <p class="mb-0 fw-bold">{{ post.user_id|title }}</p>
+                            <small class="text-muted">{{ post.publish_date|date:"F j, Y" }}</small>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        {{ post.body|linebreaks }}
+                    </div>
+                </div>
+            </article>
 
+            <section class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h3 class="mb-0"><i class="bi bi-chat-left-text me-2"></i>Comments</h3>
+                </div>
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                    <form method="GET" class="mb-4">
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="3" name="comment-text"
+                                placeholder="Share your thoughts..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <a href="{% url 'login' %}" class="alert-link">Login</a> to post a comment
+                    </div>
+                    {% endif %}
 
-    <div class="container my-4">
-        <form action="{% url 'post' post.id %}" method="GET">
-            <h3>Comment</h3>
-            <div class="mb-3">
-                <textarea class="form-control" rows="6" placeholder="Share your thoughts by doing a comment"
-                    name="comment-text"></textarea>
-            </div>
-            <div class="mb-3">
-                <input type="submit" class="form-control bg bg-success text-white" value="Comment">
-            </div>
-        </form>
-    </div>
-
-    <div class="container my-4">
-        {% if comments %}
-        {% for comment in comments %}
-        <div class="d-flex flex-column my-2">
-            <div class="d-flex">
-                <img src="https://cdn-icons-png.flaticon.com/128/847/847969.png" alt="default-user-image" width="40">
-                <p class="mx-2 my-2"><strong>{{ comment.user_id | title }}</strong></p>
-                <p class="mx-2 my-2">{{ comment.comment_date }}</p>
-            </div>
-            <p class="my-2">{{ comment.comment_text }}</p>
+                    {% if comments %}
+                    <div class="comments-list mt-4">
+                        {% for comment in comments %}
+                        <div class="comment mb-3 pb-3 border-bottom">
+                            <div class="d-flex">
+                                <img src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" width="40"
+                                    class="rounded-circle me-3">
+                                <div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <strong class="me-2">{{ comment.user_id|title }}</strong>
+                                        <small class="text-muted">{{ comment.comment_date|timesince }} ago</small>
+                                    </div>
+                                    <p class="mb-0">{{ comment.comment_text }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
         </div>
-        {% endfor %}
     </div>
-
-    {% endif %}
-    {% endblock %}
+</div>
+{% endblock %}
