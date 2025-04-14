@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.http import HttpResponse
 from posts.models import Post
 from django.contrib import messages
 
@@ -18,22 +17,17 @@ def register(request):
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'That username already exits')
                 return redirect('register')
-                # return HttpResponse('That username already exits')
             elif User.objects.filter(email=email).exists():
                 messages.error(request, 'That email address is already been taken')
                 return redirect('register')
-                # return HttpResponse('That email address is already been taken')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
                 messages.success(request, 'Successfully Registered!')
                 return redirect('register')
-                # return HttpResponse('Successfully Regitered!')
         else:
                 messages.error(request, 'Passwords should match!')
                 return redirect('register')
-
-                # return HttpResponse('Passwords should match!')
 
     return render(request, 'accounts/register.html')
 
@@ -70,10 +64,12 @@ def dashboard(request):
         if request.method == 'POST':
             username = request.POST['username']
             email = request.POST['email']
+            if username == '' or email == '':
+                messages.error(request, 'Please fill out the fields')
+                return redirect('dashboard')
             logged_in_user.username = username
             logged_in_user.email = email
             logged_in_user.save()
-            # return HttpResponse('Profile Updated Successfully!')
             messages.success(request, 'Profile Updated Successfully!')
             return redirect('dashboard')
         return render(request, 'accounts/dashboard.html', context)
@@ -88,7 +84,6 @@ def user_created_posts(request):
             post.delete()
             messages.success(request, 'Post Deleted Successfully!')
             return redirect('user_created_posts')
-            # return HttpResponse('Post Deleted Successfully!')
          
     # displaying user created posts
     user_posts = Post.objects.order_by('-publish_date').filter(user_id=request.user.id)
@@ -98,29 +93,13 @@ def user_created_posts(request):
 def edit_post(request, post_id):
     # edit a post
     single_post = Post.objects.get(id=post_id)
-    # if 'post-image' in request.GET and 'post-title' in request.GET and 'post-body' in request.GET:
-    #         if request.GET['post-image'] == '' or request.GET['post-title'] == '' or request.GET['post-body'] == '':
-    #             messages.error(request, 'Failed to Update the Post! Make sure you fill all the fields')
-    #             return redirect('user_created_posts')
-    #             # return HttpResponse('Failed to Post! Make sure you fill all the fields')
-    #         else:
-    #             post_image = request.GET['post-image']
-    #             post_title = request.GET['post-title']
-    #             post_body = request.GET['post-body']
-    #             single_post.image = post_image
-    #             single_post.title = post_title
-    #             single_post.body = post_body
-    #             single_post.save()
-    #             messages.success(request, 'Post Updated Successfully!')
-    #             return redirect('user_created_posts')
-                # return HttpResponse('Post Updated Successfully!')
     if request.method == 'POST':
         post_title = request.POST['post-title']
         post_body = request.POST['post-body']
-        if post_title == '' or post_body == '':
-            return HttpResponse('Fill the fields')
+        post_image = request.FILES['post-image'] if request.FILES else ''
+        if post_image == '' or post_title == '' or post_body == '':
+            messages.error(request, 'Make sure to fill out the fields')
         else:   
-            post_image = request.FILES['post-image']
             single_post.image = post_image
             single_post.title = post_title
             single_post.body = post_body
